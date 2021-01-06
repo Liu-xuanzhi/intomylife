@@ -1,0 +1,17 @@
+  server:
+    port: 8080
+  spring:
+    devtools:
+      restart:
+        exclude:  static/**,public/**
+        enabled:  true
+    datasource:
+      name: mysql
+      url: jdbc:mysql://localhost:3306/student_information?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+  mybatis:
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    mapper-locations: classpath*:mapper/*.xml
