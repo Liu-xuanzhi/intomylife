@@ -11,8 +11,9 @@ package com.lxz.demo.controller;/***********************************************
  ********************************************************/
 
 import com.lxz.demo.service.impl.TeamServiceImpl;
-import com.lxz.demo.vo.response.ResultVO;
-import com.lxz.demo.vo.response.TeamVO;
+import com.lxz.demo.vo.request.UpdateTeamReqVO;
+import com.lxz.demo.vo.response.ResultRepVO;
+import com.lxz.demo.vo.query.TeamQryVO;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +36,9 @@ public class TeamController {
     @Autowired
     TeamServiceImpl teamService;
     @Autowired
-    TeamVO teamVO;
+    TeamQryVO teamQryVO;
     @Autowired
-    ResultVO resultVO;
+    ResultRepVO resultRepVO;
 
     /**
      * @Title: listTeam
@@ -50,7 +51,7 @@ public class TeamController {
      */
     @GetMapping("/listTeam")
     @ApiOperation(value = "查询所有班级信息", notes = "列表查询")
-    public List<TeamVO> listTeam(){
+    public List<TeamQryVO> listTeam(){
         System.out.println("all");
         return teamService.listClass();
     }
@@ -67,7 +68,7 @@ public class TeamController {
     @GetMapping("/getTeamByTeacher")
     @ApiOperation(value = "查询班级信息根据teacher", notes = "列表查询")
     @ApiImplicitParam(name = "teacher", value = "班主任名字", dataType = "String",required = true)
-    public TeamVO listTeamByTeacher(String teacher){
+    public TeamQryVO listTeamByTeacher(String teacher){
         return teamService.listClassByTeacher(teacher);
     }
 
@@ -83,36 +84,25 @@ public class TeamController {
     @GetMapping("/getTeamByGrade")
     @ApiOperation(value = "查询班级信息根据年级", notes = "列表查询")
     @ApiImplicitParam(name = "grade", value = "年级", dataType = "int",required = true)
-    public List<TeamVO> listTeamByGrade(Integer grade){
+    public List<TeamQryVO> listTeamByGrade(Integer grade){
         return teamService.listClassByGrade(grade);
     }
 
     /**
      * @Title: updateTeam
      * @Description: 全信息更新
-     * @param id,teacher
+     * @param updateTeamReqVO
      * @return: String
      * @throws
      * @author: liuxuanzhi
      * @Date:  2020/12/30/17:02
      */
-    @PostMapping("/saveTeam")
+    @PostMapping("/updateTeam")
     @ApiOperation(value = "根据id更改老师名字", notes = "更改老师")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "编号", dataType = "int", required = true),
-            @ApiImplicitParam(name = "teacher", value = "姓名", dataType = "String", required = true)
-    })
-    public ResultVO saveTeam( @RequestBody Integer id, String teacher){
-        try {
-            teamService.saveClass(id,teacher);
-        }catch (Exception e){
-            e.printStackTrace();
-            resultVO.setMessage("更新失败，原因："+e.getMessage());
-            resultVO.setSuccess(false);
-            return resultVO;
-        }
-        resultVO.setSuccess(true);
-        resultVO.setMessage("更新成功");
-        return resultVO;
+    public ResultRepVO saveTeam(@RequestBody UpdateTeamReqVO updateTeamReqVO){
+
+        resultRepVO = teamService.updateClass(updateTeamReqVO);
+
+        return resultRepVO;
     }
 }

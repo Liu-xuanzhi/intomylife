@@ -10,9 +10,12 @@ package com.lxz.demo.vo.response;/**********************************************
  *
  ********************************************************/
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * 包名称： com.lxz.demo.vo
@@ -24,11 +27,11 @@ import java.io.Serializable;
 
 @RestController
 @Data
-public class ResultVO implements Serializable {
+@ApiModel(value = "ResultRepVO对象",description = "增删改结果信息")
+public class ResultRepVO implements Serializable {
     private static final long serialVersionUID = 1343634884313243493L;
-
-    private Boolean success;
-
-    private String message;
-
+    @ApiModelProperty(value = "成功")
+    private  Boolean success;
+    @ApiModelProperty(value = "失败")
+    private  String message;
 }

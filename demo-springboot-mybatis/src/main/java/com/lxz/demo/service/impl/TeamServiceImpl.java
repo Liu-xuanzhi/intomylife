@@ -10,12 +10,16 @@ package com.lxz.demo.service.impl;/*********************************************
  *
  ********************************************************/
 
+import com.lxz.demo.dao.GradeMapper;
 import com.lxz.demo.dao.TeamMapper;
 import com.lxz.demo.entity.Team;
 import com.lxz.demo.entity.TeamExample;
 import com.lxz.demo.service.TeamService;
-import com.lxz.demo.vo.response.TeamVO;
+import com.lxz.demo.vo.query.TeamQryVO;
+import com.lxz.demo.vo.request.UpdateTeamReqVO;
+import com.lxz.demo.vo.response.ResultRepVO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,50 +47,101 @@ public class TeamServiceImpl implements TeamService {
     TeamExample teamExample;
     @Resource
     TeamMapper teamMapper;
+    @Resource
+    GradeMapper gradeMapper;
+
+    @Autowired
+    ResultRepVO resultRepVO;
 
     @Override
-    public List<TeamVO> listClass() {
-        teamExample.clear();
-        TeamExample.Criteria criteria = teamExample.createCriteria();
-        criteria.andDeleteFlagEqualTo(Long.parseLong(NOT_DELETE));
-        List<Team> teams = teamMapper.selectByExample(teamExample);
-        return copyList(teams, TeamVO.class);
+    public List<TeamQryVO> listClass() {
+        try {
+            TeamExample.Criteria criteria = teamExample.createCriteria();
+            criteria.andDeleteFlagEqualTo(Long.parseLong(NOT_DELETE));
+            List<Team> teams = teamMapper.selectByExample(teamExample);
+            return copyList(teams, TeamQryVO.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            teamExample.clear();
+        }
+        return null;
     }
 
     @Override
-    public TeamVO listClassByTeacher(String name) {
-        teamExample.clear();
-        TeamExample.Criteria criteria = teamExample.createCriteria();
-        criteria.andDeleteFlagEqualTo(Long.parseLong(NOT_DELETE));
-        criteria.andTeacherEqualTo(name);
-        List<Team> teams = teamMapper.selectByExample(teamExample);
-        TeamVO teamVO = new TeamVO();
-        BeanUtils.copyProperties(teams.get(0),teamVO);
-        return teamVO;
+    public TeamQryVO listClassByTeacher(String name) {
+        try {
+            TeamExample.Criteria criteria = teamExample.createCriteria();
+            criteria.andDeleteFlagEqualTo(Long.parseLong(NOT_DELETE));
+            criteria.andTeacherEqualTo(name);
+            List<Team> teams = teamMapper.selectByExample(teamExample);
+            TeamQryVO teamQryVO = new TeamQryVO();
+            BeanUtils.copyProperties(teams.get(0), teamQryVO);
+            return teamQryVO;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            teamExample.clear();
+        }
+        return null;
     }
 
     @Override
-    public List<TeamVO> listClassByGrade(Integer grade) {
-        teamExample.clear();
-        TeamExample.Criteria criteria = teamExample.createCriteria();
-        criteria.andDeleteFlagEqualTo(Long.parseLong(NOT_DELETE));
-        criteria.andGradeEqualTo(grade);
+    public List<TeamQryVO> listClassByGrade(Integer grade) {
+        try {
+            teamExample.clear();
+            TeamExample.Criteria criteria = teamExample.createCriteria();
+            criteria.andDeleteFlagEqualTo(Long.parseLong(NOT_DELETE));
+            criteria.andGradeEqualTo(grade);
 
-        List<Team> teams = teamMapper.selectByExample(teamExample);
-        return copyList(teams, TeamVO.class);
+            List<Team> teams = teamMapper.selectByExample(teamExample);
+            return copyList(teams, TeamQryVO.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            teamExample.clear();
+        }
+        return null;
     }
 
     @Override
-    public void saveClass(Integer id, String teacher) {
-        teamExample.clear();
-        LocalDateTime updateDateTime= LocalDateTime.now();
-        Date updateTime = Date.from(updateDateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant());
-        TeamExample.Criteria criteria = teamExample.createCriteria();
-        criteria.andIdEqualTo(id);
-        Team team = new Team();
-        team.setTeacher(teacher);
-        team.setUpdateTime(updateTime);
-        team.setUpdateUserId("1");
-        teamMapper.updateByExampleSelective(team,teamExample);
+    public ResultRepVO updateClass(UpdateTeamReqVO updateTeamReqVO) {
+        try {
+            if(teamMapper.selectByPrimaryKey(updateTeamReqVO.getId()) == null){
+                resultRepVO.setSuccess(false);
+                resultRepVO.setMessage("班级或年级不存在");
+                return resultRepVO;
+            }
+            LocalDateTime updateDateTime = LocalDateTime.now();
+            Date updateTime = Date.from(updateDateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant());
+            TeamExample.Criteria criteria = teamExample.createCriteria();
+            criteria.andIdEqualTo(updateTeamReqVO.getId());
+            Team team = updateTeamReqVO.teamValueOf();
+            team.setUpdateTime(updateTime);
+            teamMapper.updateByExampleSelective(team, teamExample);
+            resultRepVO.setMessage("成功");
+            resultRepVO.setSuccess(true);
+            return resultRepVO;
+        }catch (Exception e){
+            e.printStackTrace();
+            resultRepVO.setMessage("内部错误");
+            resultRepVO.setSuccess(false);
+            return resultRepVO;
+        }finally {
+            teamExample.clear();
+        }
+    }
+
+    @Override
+    public List<Team> teamListByGrade(Integer grade, Integer name){
+        try {
+            teamExample.createCriteria().andGradeEqualTo(grade).andNameEqualTo(name).andDeleteFlagEqualTo(Long.parseLong(NOT_DELETE));
+            return teamMapper.selectByExample(teamExample);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            teamExample.clear();
+        }
+        return null;
     }
 }

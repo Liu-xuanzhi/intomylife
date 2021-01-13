@@ -1,6 +1,6 @@
 package com.lxz.demo.service;
 
-import com.lxz.demo.vo.response.AssociationVO;
+import com.lxz.demo.vo.query.AssociationQryVO;
 import java.util.List;
 
 /****************************************************
@@ -23,7 +23,7 @@ public interface AssociationService {
      * @author: liuxuanzhi
      * @Date:  2020/12/30/16:39
      */
-    List<AssociationVO> listAll();
+    List<AssociationQryVO> listAll();
 }
 
 

@@ -1,7 +1,5 @@
 package com.lxz.demo.service;
 
-import lombok.Data;
-import org.springframework.web.bind.annotation.RestController;
 
 /****************************************************
  * 创建人：     @author liuxuanzhi    

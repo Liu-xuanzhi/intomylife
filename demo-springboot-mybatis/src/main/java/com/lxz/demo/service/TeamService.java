@@ -1,6 +1,9 @@
 package com.lxz.demo.service;
 
-import com.lxz.demo.vo.response.TeamVO;
+import com.lxz.demo.entity.Team;
+import com.lxz.demo.vo.query.TeamQryVO;
+import com.lxz.demo.vo.request.UpdateTeamReqVO;
+import com.lxz.demo.vo.response.ResultRepVO;
 
 import java.util.List;
 
@@ -24,7 +27,7 @@ public interface TeamService {
      * @author: liuxuanzhi
      * @Date:  2020/12/30/16:39
      */
-    List<TeamVO> listClass();
+    List<TeamQryVO> listClass();
 
     /**
      * 获取数据根据老师名
@@ -34,7 +37,7 @@ public interface TeamService {
      * @author: liuxuanzhi
      * @Date:  2020/12/30/16:39
      */
-    TeamVO listClassByTeacher(String name);
+    TeamQryVO listClassByTeacher(String name);
 
     /**
      * 获取所有数据更加年级
@@ -44,16 +47,26 @@ public interface TeamService {
      * @author: liuxuanzhi
      * @Date:  2020/12/30/16:39
      */
-    List<TeamVO> listClassByGrade(Integer grade);
+    List<TeamQryVO> listClassByGrade(Integer grade);
 
     /**
      * 更新老师通过id
-     * @param id
-     * @param teacher
+     * @param updateTeamReqVO
      * @return: null
      * @throws
      * @author: liuxuanzhi
      * @Date:  2020/12/30/16:39
      */
-    void saveClass(Integer id,String teacher);
+    ResultRepVO updateClass(UpdateTeamReqVO updateTeamReqVO);
+
+    /**
+     * 根据班级名年级名查询
+     * @param grade
+     * @param  name
+     * @return:    List<team>
+     * @throws
+     * @author: liuxuanzhi
+     * @Date:  2021/1/8/13:42
+     */
+     List<Team> teamListByGrade(Integer grade, Integer name);
 }

@@ -4,7 +4,6 @@ import com.lxz.demo.entity.Student;
 import com.lxz.demo.entity.StudentExample;
 import java.util.List;
 
-import com.lxz.demo.vo.response.AssociationVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

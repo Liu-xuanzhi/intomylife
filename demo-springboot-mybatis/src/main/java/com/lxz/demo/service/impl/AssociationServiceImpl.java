@@ -13,7 +13,7 @@ package com.lxz.demo.service.impl;/*********************************************
 import com.lxz.demo.dao.StudentMapper;
 import com.lxz.demo.entity.Student;
 import com.lxz.demo.service.AssociationService;
-import com.lxz.demo.vo.response.AssociationVO;
+import com.lxz.demo.vo.query.AssociationQryVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,21 +34,21 @@ public class AssociationServiceImpl implements AssociationService {
     StudentMapper studentMapper;
 
     @Override
-    public List<AssociationVO> listAll() {
-        List<AssociationVO> listAssociationVO=new ArrayList<>();
+    public List<AssociationQryVO> listAll() {
+        List<AssociationQryVO> listAssociationQryVO =new ArrayList<>();
         List<Student> students = studentMapper.selectAll();
         for(int i=0;i<students.size();i++){
-            AssociationVO associationVO = new AssociationVO();
-            associationVO.setSid(students.get(i).getId());
-            associationVO.setName(students.get(i).getName());
-            associationVO.setAge(students.get(i).getAge());
-            associationVO.setGrade(students.get(i).getGradeList().get(0).getName());
-            associationVO.setTeam(students.get(i).getGradeList().get(0).getTeam().getName());
-            associationVO.setTeacher(students.get(i).getGradeList().get(0).getTeam().getTeacher());
-            System.out.println(associationVO.toString());
-            listAssociationVO.add(i,associationVO);
+            AssociationQryVO associationQryVO = new AssociationQryVO();
+            associationQryVO.setSid(students.get(i).getId());
+            associationQryVO.setName(students.get(i).getName());
+            associationQryVO.setAge(students.get(i).getAge());
+            associationQryVO.setGrade(students.get(i).getGradeList().get(0).getName());
+            associationQryVO.setTeam(students.get(i).getGradeList().get(0).getTeam().getName());
+            associationQryVO.setTeacher(students.get(i).getGradeList().get(0).getTeam().getTeacher());
+            System.out.println(associationQryVO.toString());
+            listAssociationQryVO.add(i, associationQryVO);
         }
-        return listAssociationVO;
+        return listAssociationQryVO;
     }
 
 }

@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.util.DateUtil.parse;
 
@@ -86,15 +85,15 @@ class DemoSpringbootMybatisApplicationTests {
         System.out.println(line);
     }
 
-    @Test
-    public void addServiceTest(){
-        studentInfoService.addStudent("夏洛",2,5,23,"1");
-    }
+//    @Test
+//    public void addServiceTest(){
+//        studentInfoService.addStudent("夏洛",2,5,23,"1");
+//    }
 
-    @Test
-    public  void updateAllServiceTest(){
-        studentInfoService.saveStudent(10001,"李毅",24,"1",3,4);
-    }
+//    @Test
+////    public  void updateAllServiceTest(){
+////        studentInfoService.saveStudent(10001,"李毅",24,"1",3,4);
+//    }
 
     @Test
     public void deleteServiceTest(){
@@ -125,9 +124,100 @@ class DemoSpringbootMybatisApplicationTests {
         System.out.println(associationVO.get(1).getGradeList().get(0).getName());
     }
 
+    public int maxProfit(int[] prices, int fee) {
+        int profit = 0;
+        int buyPrice = prices[0] + fee;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > buyPrice){
+                profit += prices[i] - buyPrice;
+                buyPrice = prices[i];
+            }else if(buyPrice > prices[i] + fee){
+                buyPrice = prices[i] + fee;
+            }
+        }
+        return profit;
+    }
     @Test
     public void associationServiceTesta(){
-        System.out.println(associationServiceImpl.listAll().toArray().toString());
+
+        ListNode listNode = new ListNode(-129);
+        listNode.next=new ListNode(-129);
+//        listNode.next.next=new ListNode((3));
+        System.out.println();
+        System.out.println(isPalindrome(listNode));
+    }
+
+    public class ListNode {
+      int val;
+      ListNode next;
+      ListNode(int x) { val = x; }
+  }
+    public boolean isPalindrome(ListNode head) {
+        int i=0;
+        ListNode load=head;
+        List list = new ArrayList();
+
+        while(load!=null){
+            list.add(i,load.val);
+            load=load.next;
+            i++;
+        }
+        int l=list.size();
+        if(l==0||l==1){
+            return true;
+        }
+        if(l==2){
+            System.out.println(list.get(0));
+            System.out.println(list.get(1));
+            if(list.get(0).equals(list.get(1))){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        for(int a=0;a<l/2;a++){
+            if(list.get(a)!=list.get(l-a-1)){
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    @Test
+    public void intTest(){
+        int a=Integer.MAX_VALUE;
+        System.out.println(a);
+        int b=Integer.MAX_VALUE;
+        System.out.println(a+b);
+    }
+
+    public int maxProfit(int[] prices) {
+        if (prices.length < 2) {
+            return 0;
+        }
+        TreeMap<String, String> treeMap = new TreeMap<String, String>();
+        Collections.synchronizedMap()
+        treeMap.comparator();
+        int totalPrice = 0;
+        int temp = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            //找一个最小的买入
+            if (prices[i] < temp) {
+                temp = prices[i];
+            } else if (prices[i] > temp) {
+                //只要出售股价比买入股价高，就比较一下是否能获取更大利润
+                totalPrice = Math.max(totalPrice, prices[i] - temp);
+            }
+        }
+        return totalPrice;
+    }
+
+    @Test
+    public void gupiaoTest(){
+        int[] i={7,1,5,3,6,4};
+        System.out.println(maxProfit(i));
     }
 }
 

@@ -11,7 +11,7 @@ package com.lxz.demo.controller;/***********************************************
  ********************************************************/
 
 import com.lxz.demo.service.impl.AssociationServiceImpl;
-import com.lxz.demo.vo.response.AssociationVO;
+import com.lxz.demo.vo.query.AssociationQryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class GeneralInformationController {
      */
     @GetMapping("/selectAll")
     @ApiOperation(value = "查询综合信息", notes = "学号、姓名、年级、班级、年龄、班主任查询")
-    public List<AssociationVO> selectAll(){
+    public List<AssociationQryVO> selectAll(){
         return associationService.listAll();
     }
 
